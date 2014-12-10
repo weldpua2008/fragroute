@@ -105,7 +105,7 @@ if [ ${INSTALL_DEPENDENCES} == true ];then
 	yum install libevent-devel -y
 	if [ $BUILD_STATIC == true ];then
 		yum install glibc-static.x86_64 bluez-libs-devel -y &> /dev/null
-		yum remove libpcap libpcap-devel -y
+		yum remove libpcap libpcap-devel -y &> /dev/null
 	else
 		yum install libpcap libevent-devel libpcap-devel -y &> /dev/null
 	fi
@@ -200,7 +200,7 @@ cd ${SPEC_PATH}
 	fi
 	echo ""
 	echo -n "build libdnet"
-	rpmbuild -ba $(basename $LIBDNET_SPEC) #&> /dev/null
+	rpmbuild -ba $(basename $LIBDNET_SPEC) &> /dev/null
 	iSok $?
 	echo ""
 	echo -n "install ${RPMS_PATH}/libdnet-*.rpm"
