@@ -180,7 +180,7 @@ cd ${SOURCES_PATH}
 	rm -rf  ${LIBDNET_FILE_NAME} &> /dev/null
 
 
-        git clone ${LIBDNET_REPO}
+        git clone ${LIBDNET_REPO} &> /dev/null
         mv ${filename} ${LIBDNET_FILE_NAME%.*.*}
         tar czf ${LIBDNET_FILE_NAME} ${LIBDNET_FILE_NAME%.*.*} &> /dev/null
 
