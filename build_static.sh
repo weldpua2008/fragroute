@@ -57,7 +57,7 @@ EPEL_CENTOS6="http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noa
 EPEL_CENTOS7="http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-1.noarch.rpm"
 
 
-while getopts ":s" opt; do
+while getopts ":s:d:n:r" opt; do
   case $opt in
     s)
 	echo "-s start to build static!" >&2
@@ -92,9 +92,10 @@ if [ ${INSTALL_DEPENDENCES} == true ];then
 	echo " install libpcap libevent-devel"
 	yum install libevent-devel -y
 	if [ $BUILD_STATIC == true ];then
-		yum install glibc-static.x86_64 bluez-libs-devel -y
+		yum install glibc-static.x86_64 bluez-libs-devel -y &> /dev/null
+		yum remove libpcap libpcap-devel -y
 	else
-		yum install libpcap libevent-devel libpcap-devel -y
+		yum install libpcap libevent-devel libpcap-devel -y &> /dev/null
 	fi
 fi
 
@@ -105,26 +106,26 @@ if [ -f /etc/redhat-release  ] && [ $INSTALL_REPOSITORY == true ];then
 	echo -n "install repository of EPEL for "	
 	 cat /etc/redhat-release|cut -d "." -f1 |grep 7 &> /dev/null
         if [ $? -eq 0 ];then
-		echo -n "CentOs7"
-                wget ${EPEL_CENTOS7}
-                rpm -Uvh epel-release*.rpm
-                rm epel-release*.rpm
+		echo -n "CentOs7" 
+                wget ${EPEL_CENTOS7} &> /dev/null
+                rpm -Uvh epel-release*.rpm &> /dev/null
+                rm epel-release*.rpm &> /dev/null
         fi
 
 	cat /etc/redhat-release|cut -d "." -f1 |grep 6 &> /dev/null
 	if [ $? -eq 0 ];then
 		echo -n "CentOs6"
-		wget ${EPEL_CENTOS6}
-		rpm -Uvh epel-release*.rpm
-		rm epel-release*.rpm
+		wget ${EPEL_CENTOS6} &> /dev/null
+		rpm -Uvh epel-release*.rpm &> /dev/null
+		rm epel-release*.rpm &> /dev/null
 	fi
 
 	cat /etc/redhat-release|cut -d "." -f1 |grep 5 &> /dev/null
         if [ $? -eq 0 ];then
 		echo -n "CentOs5"
-                wget ${EPEL_CENTOS5}
-                rpm -Uvh epel-release*.rpm
-                rm epel-release*.rpm
+                wget ${EPEL_CENTOS5} &> /dev/null
+                rpm -Uvh epel-release*.rpm &> /dev/null
+                rm epel-release*.rpm &> /dev/null
         fi
 
 	echo  "..."
@@ -137,10 +138,14 @@ echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
 
 cd ${SPEC_PATH}
 	echo "store spec files to ${SPEC_PATH}"
-	wget ${FRAGROUTE_SPEC} 
-	wget ${FRAGROUTE_STATIC_SPEC}
-	wget ${LIBDNET_SPEC}
-	wget ${LIBPCAP_SPEC}
+	rm -rf $(basename $FRAGROUTE_SPEC) &> /dev/null 
+	wget ${FRAGROUTE_SPEC} &> /dev/null
+	rm -rf $(basename $FRAGROUTE_SPEC) &> /dev/null
+	wget ${FRAGROUTE_STATIC_SPEC} &> /dev/null
+	rm -rf $(basename $LIBDNET_SPEC) &> /dev/null
+	wget ${LIBDNET_SPEC} &> /dev/null
+	rm -rf $(basename $LIBPCAP_SPEC) &> /dev/null
+	wget ${LIBPCAP_SPEC} &> /dev/null
 
 cd ${OLDPWD}
 cd ${SOURCES_PATH}
@@ -150,9 +155,9 @@ cd ${SOURCES_PATH}
 	rm -rf ${filename} &> /dev/null
 	rm -rf ${FRAGROUTE_FILE_NAME%.*.*} &> /dev/null
 	rm -rf ${FRAGROUTE_FILE_NAME} &> /dev/null
-	git clone ${FRAGROUTE_REPO}
-	mv ${filename} ${FRAGROUTE_FILE_NAME%.*.*}
-	tar czf ${FRAGROUTE_FILE_NAME} ${FRAGROUTE_FILE_NAME%.*.*}
+	git clone ${FRAGROUTE_REPO} &> /dev/null
+	mv ${filename} ${FRAGROUTE_FILE_NAME%.*.*} &> /dev/null
+	tar czf ${FRAGROUTE_FILE_NAME} ${FRAGROUTE_FILE_NAME%.*.*} &> /dev/null
 
 	echo "get libdnet files from repositories"
         filename=$(basename $LIBDNET_REPO)
@@ -164,12 +169,12 @@ cd ${SOURCES_PATH}
 
         git clone ${LIBDNET_REPO}
         mv ${filename} ${LIBDNET_FILE_NAME%.*.*}
-        tar czf ${LIBDNET_FILE_NAME} ${LIBDNET_FILE_NAME%.*.*}
+        tar czf ${LIBDNET_FILE_NAME} ${LIBDNET_FILE_NAME%.*.*} &> /dev/null
 
 
 	echo "get libpcap for static build"
 	for (( i = 0 ; i < ${#LIBPCAP_SOURCES_FILES[@]} ; i++ )) do
-		  wget  ${LIBPCAP_SOURCES_FILES[$i]}
+		  wget  ${LIBPCAP_SOURCES_FILES[$i]} &> /dev/null
 	done
 
 
@@ -182,8 +187,8 @@ cd ${SPEC_PATH}
 		exit 1
 	fi
 	echo "build libdnet"
-	rpmbuild -ba $(basename $LIBDNET_SPEC)
-	rpm -Uvh ${RPMS_PATH}/libdnet-*.rpm
+	rpmbuild -ba $(basename $LIBDNET_SPEC) #&> /dev/null
+	rpm -Uvh ${RPMS_PATH}/libdnet-*.rpm &> /dev/null
 
 
 	case "$BUILD_STATIC" in 
@@ -193,8 +198,8 @@ cd ${SPEC_PATH}
 				exit 1
 			fi
 			echo "build libpcap-static"
-			rpmbuild -ba $(basename $LIBPCAP_SPEC)
-			rpm -Uvh ${RPMS_PATH}/libpcap*.rpm
+			rpmbuild -ba $(basename $LIBPCAP_SPEC)  &> /dev/null
+			rpm -Uvh ${RPMS_PATH}/libpcap*.rpm &> /dev/null
 
 		 	if [ ! -f  $(basename  $FRAGROUTE_STATIC_SPEC) ];then
                                 echo " there aren't ${SPEC_PATH}/$(basename $FRAGROUTE_STATIC_SPEC), exiting..."
@@ -216,5 +221,5 @@ cd ${SPEC_PATH}
 	esac
 
 cd ${OLDPWD}
-
+echo "done"
 exit 0
