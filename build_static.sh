@@ -172,13 +172,13 @@ echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
 
 cd ${SPEC_PATH}
 	echo "store spec files to ${SPEC_PATH}"
-	rm -rf $(basename $FRAGROUTE_SPEC) &> /dev/null 
+	rm -rf $(basename $FRAGROUTE_SPEC)* &> /dev/null 
 	#wget ${FRAGROUTE_SPEC} &> /dev/null
-	rm -rf $(basename $FRAGROUTE_SPEC) &> /dev/null
+	rm -rf $(basename $FRAGROUTE_STATIC_SPEC)* &> /dev/null
 	#wget ${FRAGROUTE_STATIC_SPEC} &> /dev/null
-	rm -rf $(basename $LIBDNET_SPEC) &> /dev/null
+	rm -rf $(basename $LIBDNET_SPEC)* &> /dev/null
 	#wget ${LIBDNET_SPEC} &> /dev/null
-	rm -rf $(basename $LIBPCAP_SPEC) &> /dev/null
+	rm -rf $(basename $LIBPCAP_SPEC)* &> /dev/null
 
 	wget ${FRAGROUTE_SPEC} &> /dev/null
 	wget ${FRAGROUTE_STATIC_SPEC} &> /dev/null
@@ -238,7 +238,7 @@ cd ${SPEC_PATH}
 	echo -n "install ${RPMS_PATH}/libdnet-*.rpm"
 	rpm -Uvh ${RPMS_PATH}/libdnet-*.rpm &> /dev/null
 	iSok $?
-
+	echo ""
 
 
 	case "$BUILD_STATIC" in 
