@@ -108,7 +108,7 @@ if [ ${INSTALL_DEPENDENCES} == true ];then
 		yum install glibc-static.x86_64 bluez-libs-devel -y &> /dev/null
 		yum remove libpcap libpcap-devel -y &> /dev/null
 	else
-		yum install libpcap libevent-devel libpcap-devel -y &> /dev/null
+		yum install libpcap libpcap-devel -y &> /dev/null
 	fi
 fi
 
@@ -223,6 +223,11 @@ cd ${SPEC_PATH}
 			echo -n "build libpcap-static"
 			rpmbuild -ba $(basename $LIBPCAP_SPEC)  &> /dev/null
 			iSok $?
+			for libpcap_installed in `rpm -qa|grep libpcap 2>/dev/null`;do				
+				echo "remove ${libpcap_installed}"
+				yum remove ${libpcap_installed} &> /dev/null
+			done
+
 			echo ""
 			echo "install ${RPMS_PATH}/libpcap*.rpm"
 			rpm -Uvh ${RPMS_PATH}/libpcap*.rpm &> /dev/null
