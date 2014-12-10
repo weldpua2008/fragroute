@@ -81,6 +81,18 @@ while getopts ":s:d:n:r" opt; do
   esac
 done
 
+
+iSok() {
+     if [ $1 -ne 0 ];then
+              echo -n " [FAIL]"
+              exit 1
+     else
+             echo -n " [OK]"
+     fi
+ 
+}
+
+
 # added github.com to path
 for (( i = 0 ; i < ${#LIBPCAP_SOURCES_FILES[@]} ; i++ )) do
     LIBPCAP_SOURCES_FILES[$i]=${GITHUB_PREFIX}/SOURCES/${LIBPCAP_SOURCES_FILES[$i]} 
@@ -186,9 +198,15 @@ cd ${SPEC_PATH}
 		echo " there aren't ${SPEC_PATH}/$(basename $LIBDNET_SPEC), exiting..."
 		exit 1
 	fi
-	echo "build libdnet"
+	echo ""
+	echo -n "build libdnet"
 	rpmbuild -ba $(basename $LIBDNET_SPEC) #&> /dev/null
+	iSok $?
+	echo ""
+	echo -n "install ${RPMS_PATH}/libdnet-*.rpm"
 	rpm -Uvh ${RPMS_PATH}/libdnet-*.rpm &> /dev/null
+	iSok $?
+
 
 
 	case "$BUILD_STATIC" in 
@@ -197,17 +215,23 @@ cd ${SPEC_PATH}
 				echo " there aren't ${SPEC_PATH}/$(basename $LIBPCAP_SPEC), exiting..."
 				exit 1
 			fi
-			echo "build libpcap-static"
+			echo ""
+			echo -n "build libpcap-static"
 			rpmbuild -ba $(basename $LIBPCAP_SPEC)  &> /dev/null
+			iSok $?
+			echo ""
+			echo "install ${RPMS_PATH}/libpcap*.rpm"
 			rpm -Uvh ${RPMS_PATH}/libpcap*.rpm &> /dev/null
+			iSok $?
 
 		 	if [ ! -f  $(basename  $FRAGROUTE_STATIC_SPEC) ];then
                                 echo " there aren't ${SPEC_PATH}/$(basename $FRAGROUTE_STATIC_SPEC), exiting..."
                                 exit 1
                         fi
-			echo "build fragroute-static"
-			rpmbuild -ba $(basename $FRAGROUTE_STATIC_SPEC)
-
+			echo ""
+			echo -n  "build fragroute-static"
+			rpmbuild -ba $(basename $FRAGROUTE_STATIC_SPEC) &> /dev/null
+			iSok $?
 		;;
 		"false")
 
@@ -215,9 +239,11 @@ cd ${SPEC_PATH}
 				echo " there aren't ${SPEC_PATH}/$(basename $FRAGROUTE_SPEC), exiting..."
 				exit 1
 			fi
-			echo "build fragroute"
-			rpmbuild -ba $(basename $FRAGROUTE_SPEC)
-		;;
+			echo ""
+			echo -n "build fragroute"
+			rpmbuild -ba $(basename $FRAGROUTE_SPEC) &> /dev/null
+			iSok $?
+			;;
 	esac
 
 cd ${OLDPWD}
