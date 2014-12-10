@@ -100,9 +100,10 @@ done
 
 if [ ${INSTALL_DEPENDENCES} == true ];then
 	yum groupinstall "Development Tools" -y 
-	yum install git -y
+	yum install git -y &> /dev/null
 	echo " install libpcap libevent-devel"
-	yum install libevent-devel -y
+	yum install libevent-devel -y &> /dev/null
+
 	if [ $BUILD_STATIC == true ];then
 		yum install glibc-static.x86_64 bluez-libs-devel -y &> /dev/null
 		yum remove libpcap libpcap-devel -y &> /dev/null
@@ -202,6 +203,9 @@ cd ${SPEC_PATH}
 	echo -n "build libdnet"
 	rpmbuild -ba $(basename $LIBDNET_SPEC) &> /dev/null
 	iSok $?
+	echo ""
+	echo "remove libdnet"
+	yum remove libdnet libdnet-devel -y &> /dev/null
 	echo ""
 	echo -n "install ${RPMS_PATH}/libdnet-*.rpm"
 	rpm -Uvh ${RPMS_PATH}/libdnet-*.rpm &> /dev/null
