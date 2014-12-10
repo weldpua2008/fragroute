@@ -212,6 +212,7 @@ cd ${SOURCES_PATH}
 
 	#echo "get libpcap for static build"
 	for (( i = 0 ; i < ${#LIBPCAP_SOURCES_FILES[@]} ; i++ )) do
+		 rm -f ${LIBPCAP_SOURCES_FILES[$i]} &> /dev/null
 		  wget  ${LIBPCAP_SOURCES_FILES[$i]} &> /dev/null
 	done
 
