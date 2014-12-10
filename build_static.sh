@@ -56,24 +56,33 @@ EPEL_CENTOS5="http://dl.fedoraproject.org/pub/epel/5/x86_64/epel-release-5-4.noa
 EPEL_CENTOS6="http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm"
 EPEL_CENTOS7="http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-1.noarch.rpm"
 
+if [[ $# -eq 0 ]] ; then
+    echo "use $(basename $0) -h"
+    exit 0
+fi
 
-while getopts ":s:d:n:r" opt; do
+while getopts ":s:d:n:r:h" opt; do
   case $opt in
     s)
-	echo "-s start to build static!" >&2
 	BUILD_STATIC=true	
       ;;
     d)
-	echo "-d start to build dinamic!" >&2
 	BUILD_STATIC=false
 	;;
     n)
-	echo "-n not install dependencies"
+	echo "build without dependencies"
 	INSTALL_DEPENDENCES=false
 	;;
     r)
-	echo "-r not install repository"
+	echo "without repository repository"
 	INSTALL_REPOSITORY=false
+	;;
+    h)
+	 echo "-s yes start to build static"
+	 echo "-d yes start to build shared" 
+	 echo "-n yes not install dependencies"
+	 echo "-r yes not install repository"
+
 	;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -81,6 +90,11 @@ while getopts ":s:d:n:r" opt; do
   esac
 done
 
+if [ $BUILD_STATIC == true ];then 
+	echo "start static build"
+else
+	echo "started shared build"
+fi
 
 iSok() {
      if [ $1 -ne 0 ];then
