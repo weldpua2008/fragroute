@@ -10,7 +10,7 @@ and do simply:
 	./build_static.sh -s yes
 
 
-# ./build_static.sh -d yes
+````# ./build_static.sh -d yes
 started shared build
 install libevent-devel
 remove libpcap-*
@@ -25,7 +25,7 @@ install /root/rpmbuild/RPMS/x86_64/libdnet-*.rpm [OK]
 build fragroute [OK]
  [done]
 
-# ./build_static.sh -s yes
+````# ./build_static.sh -s yes
 start static build
  install libevent-devel
 remove libpcap-*
