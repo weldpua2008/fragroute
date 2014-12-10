@@ -99,7 +99,7 @@ for (( i = 0 ; i < ${#LIBPCAP_SOURCES_FILES[@]} ; i++ )) do
 done
 
 if [ ${INSTALL_DEPENDENCES} == true ];then
-	yum groupinstall "Development Tools" -y 
+	yum groupinstall "Development Tools" -y &> /dev/null
 	yum install git -y &> /dev/null
 	echo " install libpcap libevent-devel"
 	yum install libevent-devel -y &> /dev/null
@@ -205,7 +205,9 @@ cd ${SPEC_PATH}
 	iSok $?
 	echo ""
 	echo "remove libdnet"
-	yum remove libdnet libdnet-devel -y &> /dev/null
+	for libdnet_installed in `rpm -qa|grep libdnet 2>/dev/null`;do
+		yum remove ${libdnet_installed} -y &> /dev/null
+	done
 	echo ""
 	echo -n "install ${RPMS_PATH}/libdnet-*.rpm"
 	rpm -Uvh ${RPMS_PATH}/libdnet-*.rpm &> /dev/null
