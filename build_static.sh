@@ -227,7 +227,7 @@ cd ${SPEC_PATH}
 			iSok $?
 			for libpcap_installed in `rpm -qa|grep libpcap 2>/dev/null`;do				
 				echo "remove ${libpcap_installed}"
-				yum remove ${libpcap_installed} &> /dev/null
+				yum remove ${libpcap_installed} -y  &> /dev/null
 			done
 
 			echo ""
