@@ -136,7 +136,6 @@ fi
 
 echo "install repository"
 if [ -f /etc/redhat-release  ] && [ $INSTALL_REPOSITORY == true ];then
-	echo ""
 	echo -n "install repository of EPEL for "	
 	 cat /etc/redhat-release|cut -d "." -f1 |grep 7 &> /dev/null
         if [ $? -eq 0 ];then
@@ -219,13 +218,11 @@ cd ${SOURCES_PATH}
 
 
 cd ${OLDPWD}
-echo ""
 cd ${SPEC_PATH}
 	if [ ! -f  $(basename $LIBDNET_SPEC) ];then 
 		echo " there aren't ${SPEC_PATH}/$(basename $LIBDNET_SPEC), exiting..."
 		exit 1
 	fi
-	echo ""
 	echo -n "build libdnet"
 	rpmbuild -ba $(basename $LIBDNET_SPEC) &> /dev/null
 	iSok $?
@@ -247,7 +244,6 @@ cd ${SPEC_PATH}
 				echo " there aren't ${SPEC_PATH}/$(basename $LIBPCAP_SPEC), exiting..."
 				exit 1
 			fi
-			echo ""
 			echo -n "build libpcap-static"
 			rpmbuild -ba $(basename $LIBPCAP_SPEC)  &> /dev/null
 			iSok $?
@@ -277,7 +273,6 @@ cd ${SPEC_PATH}
 				echo " there aren't ${SPEC_PATH}/$(basename $FRAGROUTE_SPEC), exiting..."
 				exit 1
 			fi
-			echo ""
 			echo -n "build fragroute"
 			rpmbuild -ba $(basename $FRAGROUTE_SPEC) &> /dev/null
 			iSok $?
