@@ -115,7 +115,7 @@ done
 if [ ${INSTALL_DEPENDENCES} == true ];then
 	yum groupinstall "Development Tools" -y &> /dev/null
 	yum install git -y &> /dev/null
-	echo " install libpcap libevent-devel"
+	echo " install libevent-devel"
 	yum remove libevent-devel -y &> /dev/null
 	yum install libevent-devel -y &> /dev/null
 	echo "remove libpcap-*"
@@ -173,13 +173,18 @@ echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
 cd ${SPEC_PATH}
 	echo "store spec files to ${SPEC_PATH}"
 	rm -rf $(basename $FRAGROUTE_SPEC) &> /dev/null 
-	wget ${FRAGROUTE_SPEC} &> /dev/null
+	#wget ${FRAGROUTE_SPEC} &> /dev/null
 	rm -rf $(basename $FRAGROUTE_SPEC) &> /dev/null
-	wget ${FRAGROUTE_STATIC_SPEC} &> /dev/null
+	#wget ${FRAGROUTE_STATIC_SPEC} &> /dev/null
 	rm -rf $(basename $LIBDNET_SPEC) &> /dev/null
-	wget ${LIBDNET_SPEC} &> /dev/null
+	#wget ${LIBDNET_SPEC} &> /dev/null
 	rm -rf $(basename $LIBPCAP_SPEC) &> /dev/null
+
+	wget ${FRAGROUTE_SPEC} &> /dev/null
+	wget ${FRAGROUTE_STATIC_SPEC} &> /dev/null
+	wget ${LIBDNET_SPEC} &> /dev/null
 	wget ${LIBPCAP_SPEC} &> /dev/null
+	
 
 cd ${OLDPWD}
 cd ${SOURCES_PATH}
@@ -246,11 +251,11 @@ cd ${SPEC_PATH}
 			echo -n "build libpcap-static"
 			rpmbuild -ba $(basename $LIBPCAP_SPEC)  &> /dev/null
 			iSok $?
-			echo ""
-			yum remove -y libpcap libpcap-devel libpcap-debuginfo &> /dev/null
-			for libpcap_installed in `rpm -qa --queryformat '%{NAME}\n'|grep libpcap 2>/dev/null`;do				
-				yum remove ${libpcap_installed} -y  &> /dev/null
-			done
+			#echo ""
+			#yum remove -y libpcap libpcap-devel libpcap-debuginfo &> /dev/null
+			#for libpcap_installed in `rpm -qa --queryformat '%{NAME}\n'|grep libpcap 2>/dev/null`;do				
+			#	yum remove ${libpcap_installed} -y  &> /dev/null
+			#done
 
 			echo ""
 			echo -n "install ${RPMS_PATH}/libpcap*.rpm"
