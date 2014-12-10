@@ -12,7 +12,7 @@ and do simply:
 	./build_static.sh -s yes
 
 
-# ./build_static.sh -d yes
+    # ./build_static.sh -d yes
     started shared build
     install libevent-devel
     remove libpcap-*
