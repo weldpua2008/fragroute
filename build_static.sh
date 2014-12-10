@@ -102,12 +102,18 @@ if [ ${INSTALL_DEPENDENCES} == true ];then
 	yum groupinstall "Development Tools" -y &> /dev/null
 	yum install git -y &> /dev/null
 	echo " install libpcap libevent-devel"
+	yum remove libevent-devel -y &> /dev/null
 	yum install libevent-devel -y &> /dev/null
+	echo "remove libpcap-*"
+	for libpcap_installed in `rpm -qa|grep libpcap 2>/dev/null`;do
+                yum remove ${libpcap_installed} -y  &> /dev/null
+        done
 
 	if [ $BUILD_STATIC == true ];then
+		# needed for static compile
 		yum install glibc-static.x86_64 bluez-libs-devel -y &> /dev/null
-		yum remove libpcap libpcap-devel -y &> /dev/null
 	else
+		# needed for shared compile
 		yum install libpcap libpcap-devel -y &> /dev/null
 	fi
 fi
@@ -225,13 +231,13 @@ cd ${SPEC_PATH}
 			echo -n "build libpcap-static"
 			rpmbuild -ba $(basename $LIBPCAP_SPEC)  &> /dev/null
 			iSok $?
+			echo ""
 			for libpcap_installed in `rpm -qa|grep libpcap 2>/dev/null`;do				
-				echo "remove ${libpcap_installed}"
 				yum remove ${libpcap_installed} -y  &> /dev/null
 			done
 
 			echo ""
-			echo "install ${RPMS_PATH}/libpcap*.rpm"
+			echo -n "install ${RPMS_PATH}/libpcap*.rpm"
 			rpm -Uvh ${RPMS_PATH}/libpcap*.rpm &> /dev/null
 			iSok $?
 
@@ -258,5 +264,7 @@ cd ${SPEC_PATH}
 	esac
 
 cd ${OLDPWD}
-echo "done"
+echo ""
+echo " [done]"
+
 exit 0
