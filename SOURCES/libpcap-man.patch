@@ -1,0 +1,12 @@
+diff -up libpcap/pcap.3pcap.in.man libpcap/pcap.3pcap.in
+--- libpcap/pcap.3pcap.in.man	2009-07-03 06:01:12.000000000 +0200
++++ libpcap/pcap.3pcap.in	2009-07-03 15:00:12.000000000 +0200
+@@ -363,7 +363,7 @@ use an
+ script or some other configuration script to check whether the libpcap
+ 1.0 APIs are available and use them only if they are.
+ .SH SEE ALSO
+-autoconf(1), tcpdump(1), tcpslice(1), pcap-filter(@MAN_MISC_INFO@), pfconfig(8),
++autoconf(1), tcpdump(8), tcpslice(8), pcap-filter(@MAN_MISC_INFO@), pfconfig(8),
+ usermod(1M)
+ .SH AUTHORS
+ The original authors of libpcap are:

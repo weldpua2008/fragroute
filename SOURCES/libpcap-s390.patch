@@ -1,0 +1,14 @@
+diff -up libpcap/pcap-linux.c.s390 libpcap/pcap-linux.c
+--- libpcap/pcap-linux.c.s390	2009-07-22 14:33:20.000000000 +0200
++++ libpcap/pcap-linux.c	2009-07-22 15:22:34.000000000 +0200
+@@ -2377,6 +2377,10 @@ activate_new(pcap_t *handle)
+ 				handle->linktype = DLT_LINUX_SLL;
+ 		}
+ 
++		/* Hack to make things work on s390 ctc interfaces */
++		if (strncmp("ctc", device, 3) == 0)
++			handle->linktype = DLT_EN10MB;
++
+ 		handle->md.ifindex = iface_get_id(sock_fd, device,
+ 		    handle->errbuf);
+ 		if (handle->md.ifindex == -1) {
