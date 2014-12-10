@@ -82,7 +82,7 @@ while getopts ":s:d:n:r:h" opt; do
 	 echo "-d yes start to build shared" 
 	 echo "-n yes not install dependencies"
 	 echo "-r yes not install repository"
-
+	exit 0
 	;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
