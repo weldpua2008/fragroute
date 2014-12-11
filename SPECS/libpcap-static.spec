@@ -25,6 +25,7 @@ BuildRequires: bison
 BuildRequires: bluez-libs-devel
 BuildRequires: flex
 BuildRequires: glibc-kernheaders >= 2.2.0
+BuildRoot: %{_tmpdir}/%{name}-%{version}-%{release}
 
 %description
 Libpcap provides a portable framework for low-level network
