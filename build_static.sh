@@ -24,6 +24,8 @@ INSTALL_DEPENDENCES=true
 INSTALL_REPOSITORY=true
 GET_FILES_FROM_GIT=true
 ##########
+OS_VERSION=`cat /etc/redhat-release | grep -oE '[0-9]+\.[0-9]+'|cut -d "." -f1 |head -n 1`
+
 GITHUB_PREFIX="https://raw.githubusercontent.com/weldpua2008/fragroute/master"
 FRAGROUTE_SPEC="${GITHUB_PREFIX}/SPECS/fragroute.spec"
 FRAGROUTE_STATIC_SPEC="${GITHUB_PREFIX}/SPECS/fragroute-static.spec"
@@ -35,7 +37,7 @@ SOURCES_PATH=~/rpmbuild/SOURCES
 RPMS_PATH=~/rpmbuild/RPMS/`arch`
 
 WGET="wget --no-check-certificate"
-
+RPM_EXTRA_OPTs=""
 
 #FRAGROUTE_REPO="https://github.com/stsi/fragroute-ipv6"
 FRAGROUTE_REPO="https://github.com/weldpua2008/fragroute-ipv6.git"
@@ -135,18 +137,19 @@ if [ ${INSTALL_DEPENDENCES} == true ];then
 fi
 
 
+
 echo "install repository"
 if [ -f /etc/redhat-release  ] && [ $INSTALL_REPOSITORY == true ];then
 	echo -n "install repository of EPEL for "	
-	 cat /etc/redhat-release|cut -d "." -f1 |grep 7 &> /dev/null
-        if [ $? -eq 0 ];then
-		echo -n "CentOs7" 
-                wget ${EPEL_CENTOS7} &> /dev/null
-                rpm -Uvh epel-release*.rpm &> /dev/null
-                rm epel-release*.rpm &> /dev/null
-        fi
+    echo $OS_VERSION |grep 7 &> /dev/null
+    if [ $? -eq 0 ];then
+    echo -n "CentOs7"
+            wget ${EPEL_CENTOS7} &> /dev/null
+            rpm -Uvh epel-release*.rpm &> /dev/null
+            rm epel-release*.rpm &> /dev/null
+    fi
 
-	cat /etc/redhat-release|cut -d "." -f1 |grep 6 &> /dev/null
+	echo $OS_VERSION |grep 6 &> /dev/null
 	if [ $? -eq 0 ];then
 		echo -n "CentOs6"
 		wget ${EPEL_CENTOS6} &> /dev/null
@@ -154,13 +157,13 @@ if [ -f /etc/redhat-release  ] && [ $INSTALL_REPOSITORY == true ];then
 		rm epel-release*.rpm &> /dev/null
 	fi
 
-	cat /etc/redhat-release|cut -d "." -f1 |grep 5 &> /dev/null
-        if [ $? -eq 0 ];then
-		echo -n "CentOs5"
-                wget ${EPEL_CENTOS5} &> /dev/null
-                rpm -Uvh epel-release*.rpm &> /dev/null
-                rm epel-release*.rpm &> /dev/null
-        fi
+	echo $OS_VERSION |grep 5 &> /dev/null
+    if [ $? -eq 0 ];then
+    echo -n "CentOs5"
+            wget ${EPEL_CENTOS5} &> /dev/null
+            rpm -Uvh epel-release*.rpm &> /dev/null
+            rm epel-release*.rpm &> /dev/null
+    fi
 
 	echo  "..."
 fi
@@ -235,7 +238,12 @@ cd ${SPEC_PATH}
 	done
 	#echo ""
 	echo -n "install ${RPMS_PATH}/libdnet-*.rpm"
-	rpm -Uvh ${RPMS_PATH}/libdnet-*.rpm &> /dev/null
+	echo $OS_VERSION |grep 7 &> /dev/null
+    if [ $? -eq 0 ];then
+        echo -n " for CentOS 7"
+        RPM_EXTRA_OPTs="$RPM_EXTRA_OPTs --force"
+    fi
+	rpm -Uvh ${RPM_EXTRA_OPTs} ${RPMS_PATH}/libdnet-*.rpm &> /dev/null
 	iSok $?
 	echo ""
 
