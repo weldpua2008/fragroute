@@ -74,7 +74,7 @@ while getopts ":s:d:n:r:h" opt; do
 	INSTALL_DEPENDENCES=false
 	;;
     r)
-	echo "without repository repository"
+	echo "without repository"
 	INSTALL_REPOSITORY=false
 	;;
     h)
@@ -114,7 +114,7 @@ done
 
 if [ ${INSTALL_DEPENDENCES} == true ];then
 	yum groupinstall "Development Tools" -y &> /dev/null
-	yum install git -y &> /dev/null
+	yum install git tar wget -y &> /dev/null
 	echo " install libevent-devel"
 	yum remove libevent-devel -y &> /dev/null
 	yum install libevent-devel -y &> /dev/null

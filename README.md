@@ -44,3 +44,8 @@ and do simply:
     build fragroute-static [OK]
      [done]
 
+==== OS dependencies
+* tar
+* wget
+* git
+* yum
