@@ -14,8 +14,7 @@ before_install:
 - docker pull centos:6
 - docker pull centos:7
 script:
-- docker run --rm=true -v `pwd`:/ansible-pycharm:rw $OS_TYPE:$OS_VERSION /bin/bash
-  -c "/fragroute/tests/test-on-rpm.sh"
+- docker run --rm=true -v `pwd`:/fragroute:rw $OS_TYPE:$OS_VERSION /bin/bash -c "/fragroute/tests/test-on-rpm.sh"
 notifications:
   hipchat:
     rooms:
