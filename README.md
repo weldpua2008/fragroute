@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/weldpua2008/fragroute.svg?branch=master)](https://travis-ci.org/weldpua2008/fragroute)
+
 fragroute
 =========
 build fragroute on CentOs's from root with ipv6 support
