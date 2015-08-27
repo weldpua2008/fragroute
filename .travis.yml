@@ -4,6 +4,7 @@ sudo: required
 env:
 - OS_VERSION=5 OS_TYPE=centos
 - OS_VERSION=6 OS_TYPE=centos
+- OS_VERSION=7 OS_TYPE=centos
 branches:
   only:
   - master
