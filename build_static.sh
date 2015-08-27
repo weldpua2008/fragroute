@@ -34,6 +34,7 @@ SPEC_PATH=~/rpmbuild/SPECS
 SOURCES_PATH=~/rpmbuild/SOURCES
 RPMS_PATH=~/rpmbuild/RPMS/`arch`
 
+WGET="wget --no-check-certificate"
 
 
 #FRAGROUTE_REPO="https://github.com/stsi/fragroute-ipv6"
@@ -172,17 +173,17 @@ echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
 cd ${SPEC_PATH}
 	echo "store spec files to ${SPEC_PATH}"
 	rm -rf $(basename $FRAGROUTE_SPEC)* &> /dev/null 
-	#wget ${FRAGROUTE_SPEC} &> /dev/null
+	#${WGET} ${FRAGROUTE_SPEC} &> /dev/null
 	rm -rf $(basename $FRAGROUTE_STATIC_SPEC)* &> /dev/null
-	#wget ${FRAGROUTE_STATIC_SPEC} &> /dev/null
+	#${WGET} ${FRAGROUTE_STATIC_SPEC} &> /dev/null
 	rm -rf $(basename $LIBDNET_SPEC)* &> /dev/null
-	#wget ${LIBDNET_SPEC} &> /dev/null
+	#${WGET} ${LIBDNET_SPEC} &> /dev/null
 	rm -rf $(basename $LIBPCAP_SPEC)* &> /dev/null
 
-	wget ${FRAGROUTE_SPEC} &> /dev/null
-	wget ${FRAGROUTE_STATIC_SPEC} &> /dev/null
-	wget ${LIBDNET_SPEC} &> /dev/null
-	wget ${LIBPCAP_SPEC} &> /dev/null
+	${WGET} ${FRAGROUTE_SPEC} &> /dev/null
+	${WGET} ${FRAGROUTE_STATIC_SPEC} &> /dev/null
+	${WGET} ${LIBDNET_SPEC} &> /dev/null
+	${WGET} ${LIBPCAP_SPEC} &> /dev/null
 	
 
 cd ${OLDPWD}
@@ -213,7 +214,7 @@ cd ${SOURCES_PATH}
 	#echo "get libpcap for static build"
 	for (( i = 0 ; i < ${#LIBPCAP_SOURCES_FILES[@]} ; i++ )) do
 		 rm -f ${LIBPCAP_SOURCES_FILES[$i]} &> /dev/null
-		  wget  ${LIBPCAP_SOURCES_FILES[$i]} &> /dev/null
+		  ${WGET}  ${LIBPCAP_SOURCES_FILES[$i]} &> /dev/null
 	done
 
 

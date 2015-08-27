@@ -17,6 +17,7 @@ before_install:
 script:
 - docker run --rm=true -v `pwd`:/fragroute:rw $OS_TYPE:$OS_VERSION /bin/bash -c "/fragroute/tests/test-on-rpm.sh"
 notifications:
+  email: false
   hipchat:
     rooms:
       secure: B4Fv/KkJ+OXGaHEtT24kICemV9q6CwVNHygGVYEwvAKaysy/7keRz1hz0vQ5Gf6xPXFS+bAvVNOqzwznXSbYA9iF/CzXwt11X/xFV35MfbBvlocnBDir5XsAJpX28iGOm+l3O1Y9+tslxZJtdVF3z0ko67CO6Qf2HP9HPZeeh/5ruVxFKJsm4NQwzusVPFTbzmJeQfLAxuXsXLHuYRt2YVIQVW3eF0WPpffj1/Q8ca7mAKuZNM4hu97XHlNlppOg/4NT9Kahut+MiTqyCl9IiXna4bnxLcvj0bGQoE4KSZCbG6/w5NhMvCkV1EJy8AQzbsN4GfKpUyO/zPfRXh/R5j60syi5L83y1IZ93fY2G6fABDjsJWZWTqDIocWb+9hVDrrJ87vwL6nk6jUtRJ2jcTdImSBDOd2pT2TyFGiqMVpReRpr23ORmZe19ieG7D3lpNL+50CleupAjqvcaKs6qXRuAU8emxEeavg7AlKkaNdN/nI4g6OdFJy1SKnykNRIFwaIFEcri720d9B0iKx77jnwBsKRrqv1/Rg+toMLPliPXJs9WjLEx39EAqAzSpfdf5pTihTguV5W59XMrn2pKS+ST5NHwLK0T8hCb4LovPdnEcpHo/u/lLblAyQB+hi/UrZmagtBB06zaqSL7NFlk4y9cfRE7YkewVG+mx1GWIM=
