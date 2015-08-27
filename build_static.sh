@@ -4,8 +4,10 @@
 # CentOs
 # from root
 #
-# version 0.1 <09.12.2014>
-# <weldpua2008@gmail.com>
+# version 0.2 <27.08.2015> <weldpua2008@gmail.com>
+# - fixed errors on docker images
+# - added a hack for CentOS 7  (RPM_EXTRA_OPTs=" --force"
+# version 0.1 <09.12.2014> <weldpua2008@gmail.com>
 #
 #########################
 # initial versions of fragroute 
